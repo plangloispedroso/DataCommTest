@@ -17,6 +17,8 @@ public class ThreeStonesClient {
     private Scanner reader;
     private boolean playerControl = true;
     private boolean gameInProgress = false;
+    private InputStream in;
+    private OutputStream out;
     
     public ThreeStonesClient(String address){
         this.address = address;
@@ -25,6 +27,8 @@ public class ThreeStonesClient {
     public void makeConnection() throws IOException{
        try{
            socket = new Socket(address, PORTNUMBER);
+           in = socket.getInputStream();
+           out = socket.getOutputStream();
            System.out.println("Connected to server.");
            playSession();
        }catch(IOException e){
@@ -33,13 +37,14 @@ public class ThreeStonesClient {
     }
     
     public void playSession()throws IOException{
-        ThreeStonesPacket packet = new ThreeStonesPacket(2,2,1,2,2);
-        System.out.println("Sending a packet");
-        packet.sendPacket();
-        int[] values = packet.getValues();
-        System.out.println(values[0] +", " +values[1] +", " +values[2] +", "
-            +values[3] +", " +values[4]);
-        System.out.println("Receiving a packet");
+        ThreeStonesPacket packet = new ThreeStonesPacket(1, 1, 1, 1, 1);
+        reader = new Scanner(System.in);
+        int response = reader.nextInt();
+        if(response == 0){
+            byte[] receivedBytes = packet.receivePacket(in);
+        } else {
+            packet.sendPacket(out);
+        }
 
     }
     

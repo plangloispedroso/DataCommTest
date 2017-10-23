@@ -6,6 +6,8 @@
 package threestonestest;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -43,13 +45,15 @@ public class ThreeStonesServer {
             System.out.println("Now looking for clients.");
             // try with resources will automatically close the socket when finished.
             Socket clientSocket = servSocket.accept();
-                System.out.println("Handling client at: " 
-                    +clientSocket.getInetAddress().getHostAddress()
-                    +" on port: " +clientSocket.getLocalPort());
-                // Create a new session with client
-                ThreeStonesSession session = new ThreeStonesSession(clientSocket);
-                // Start playing with the client
-                session.playSession();
+            System.out.println("Handling client at: " 
+                +clientSocket.getInetAddress().getHostAddress()
+                +" on port: " +clientSocket.getLocalPort());
+            // Create a new session with client
+            InputStream in = clientSocket.getInputStream();
+            OutputStream out = clientSocket.getOutputStream();
+            ThreeStonesSession session = new ThreeStonesSession(in, out);
+            // Start playing with the client
+            session.playSession();
             servSocket.close();
             System.out.println("Client disconnected");
         }

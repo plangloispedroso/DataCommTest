@@ -1,6 +1,10 @@
 package threestonestest;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Class that represents a game session between a client and a server.
@@ -13,23 +17,28 @@ public class ThreeStonesSession {
     private boolean gameOver;
     private Socket clientSocket;
     private ThreeStonesPacket packet;
+    private InputStream in;
+    private OutputStream out;
 
-    public ThreeStonesSession(Socket clientSocket) {
-        System.out.println("You have started a session");
+    public ThreeStonesSession(InputStream in, OutputStream out) {
+        try{
+            InetAddress address = InetAddress.getLocalHost();
+            System.out.println("The address of this machine: " + address.getHostAddress());
+        } catch (UnknownHostException e){
+            System.out.println("Unable to determine this host's address");
+        }
+
         this.playAgain = true;
         this.gameOver = false;
-        this.clientSocket = clientSocket;
+        this.in = in;
+        this.out = out;
     }
     
     public void playSession(){
-        System.out.println("let's play a game");
-        while(playAgain){
-            while(!gameOver){
-                // game logic
-                gameOver = true;
-            }
-            // Would you like to play again code
-            playAgain = false;
+        ThreeStonesPacket packet = new ThreeStonesPacket(3,3,3,3,3);
+        System.out.println("we are now playing in the session class");
+        for(;;){
+            
         }
     }
 }

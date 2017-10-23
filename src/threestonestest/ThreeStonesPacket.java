@@ -19,7 +19,8 @@ import java.nio.IntBuffer;
 public class ThreeStonesPacket {
     
     private byte[] packet = new byte[5];
-    //private Socket socket;
+    private Socket socket;
+    private InputStream in;
     
     public ThreeStonesPacket(int a, int b, int c, int d, int e){
         try{
@@ -28,14 +29,16 @@ public class ThreeStonesPacket {
             packet[2] = (byte) c;
             packet[3] = (byte) d;
             packet[4] = (byte) e;
-            //this.socket = socket;
         }catch(Exception ex){
             System.out.println("Error Creating the packet");
         }
     }
     
-    public byte[] receivePacket(byte[] values){
-        //InputStream in = socket.getInputStream();
+    public byte[] receivePacket(InputStream input)throws IOException{
+        in = input;
+        in.read(packet);
+        System.out.println("Receiving Packet");
+        checkValues();
         //int totalBytesReceived = in.read(packet);
         //if(totalBytesReceived == 5){
         //    System.out.println("Packet received");
@@ -43,23 +46,20 @@ public class ThreeStonesPacket {
         //}
         //System.out.println("There was an error in receiving the packet");
         //return null;
-        packet = values;
         return packet;
     }
     
-    public void sendPacket()throws IOException{
-        //OutputStream out = socket.getOutputStream();
-        //out.write(packet);
+    public void sendPacket(OutputStream out)throws IOException{
+        out.write(packet);
+        System.out.println("Sending Packet");
+        checkValues();
         //System.out.println("packet sent.");
         
     }
     
-    public int[] getValues(){
-        int[] values = new int[5];
-        for(int i = 0; i < 5; i++){
-            values[i] = packet[i];
-        }
-        return values;
+    private void checkValues(){
+        System.out.println(packet[0] +", " +packet[1] +", " +packet[2] +", "
+            +packet[3] +", " +packet[4]);
     }
         
 }
