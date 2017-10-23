@@ -11,7 +11,7 @@ public class ThreeStonesClientApp {
     
      public static void main(String[] args) throws IOException {
         // The ip address of the server(changes depending on machine)
-        String clientAddress = "127.0.0.1"; 
+        String clientAddress = "10.172.11.1"; //2F16-20
         ThreeStonesClient client = new ThreeStonesClient(clientAddress);
         client.makeConnection();
     }

@@ -40,8 +40,9 @@ public class ThreeStonesServer {
      */
     public void runServer()throws IOException{
         for(;;){
+            System.out.println("Now looking for clients.");
             // try with resources will automatically close the socket when finished.
-            try(Socket clientSocket = servSocket.accept()){
+            Socket clientSocket = servSocket.accept();
                 System.out.println("Handling client at: " 
                     +clientSocket.getInetAddress().getHostAddress()
                     +" on port: " +clientSocket.getLocalPort());
@@ -49,9 +50,8 @@ public class ThreeStonesServer {
                 ThreeStonesSession session = new ThreeStonesSession(clientSocket);
                 // Start playing with the client
                 session.playSession();
-            }catch(IOException e){
-                System.out.println("There was a problem connecting to the client.");
-            }
+            servSocket.close();
+            System.out.println("Client disconnected");
         }
     }
 }
