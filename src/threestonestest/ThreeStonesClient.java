@@ -26,6 +26,7 @@ public class ThreeStonesClient {
     
     public void makeConnection() throws IOException{
        try{
+           System.out.println("Trying to make connection");
            socket = new Socket(address, PORTNUMBER);
            in = socket.getInputStream();
            out = socket.getOutputStream();
@@ -37,23 +38,24 @@ public class ThreeStonesClient {
     }
     
     public void playSession()throws IOException{
-        ThreeStonesPacket packet = new ThreeStonesPacket(1, 1, 1, 1, 1);
         reader = new Scanner(System.in);
-        int response = reader.nextInt();
-        if(response == 0){
-            byte[] receivedBytes = packet.receivePacket(in);
-        } else {
-            packet.sendPacket(out);
+        System.out.println("Starting the game");
+        packet = new ThreeStonesPacket(1, 0, 0, 0, 0);
+        for(;;){
+            makeMove();
+            receiveMove();
+            System.out.println("Make your next move");
+            int choice = reader.nextInt();
+            packet = new ThreeStonesPacket(choice, 0, 0, 0, 0);
         }
-
     }
     
     public void makeMove()throws IOException{
-        //packet.sendPacket();
+        packet.sendPacket(out);
     }
     
     public void receiveMove() throws IOException{
-        //packet.receivePacket();
+        packet.receivePacket(in);
     }
     
     

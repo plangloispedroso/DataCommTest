@@ -8,8 +8,10 @@ package threestonestest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Class that handles all the tasks that a server will perform.
@@ -42,8 +44,13 @@ public class ThreeStonesServer {
      */
     public void runServer()throws IOException{
         for(;;){
+            try{
+                InetAddress address = InetAddress.getLocalHost();
+                System.out.println("The address of this machine is: " +address.getHostAddress());
+            }catch(UnknownHostException uhe){
+                System.out.println("Unable to determine the host's address.");
+            }
             System.out.println("Now looking for clients.");
-            // try with resources will automatically close the socket when finished.
             Socket clientSocket = servSocket.accept();
             System.out.println("Handling client at: " 
                 +clientSocket.getInetAddress().getHostAddress()
@@ -54,8 +61,8 @@ public class ThreeStonesServer {
             ThreeStonesSession session = new ThreeStonesSession(in, out);
             // Start playing with the client
             session.playSession();
-            servSocket.close();
-            System.out.println("Client disconnected");
+            clientSocket.close();
+            System.out.println("Client disconnected all is normal");
         }
     }
 }

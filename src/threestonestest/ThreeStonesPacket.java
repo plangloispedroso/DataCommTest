@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 
 /**
  *
@@ -20,7 +18,6 @@ public class ThreeStonesPacket {
     
     private byte[] packet = new byte[5];
     private Socket socket;
-    private InputStream in;
     
     public ThreeStonesPacket(int a, int b, int c, int d, int e){
         try{
@@ -34,18 +31,10 @@ public class ThreeStonesPacket {
         }
     }
     
-    public byte[] receivePacket(InputStream input)throws IOException{
-        in = input;
+    public byte[] receivePacket(InputStream in)throws IOException{
         in.read(packet);
         System.out.println("Receiving Packet");
         checkValues();
-        //int totalBytesReceived = in.read(packet);
-        //if(totalBytesReceived == 5){
-        //    System.out.println("Packet received");
-       //     return packet;
-        //}
-        //System.out.println("There was an error in receiving the packet");
-        //return null;
         return packet;
     }
     
@@ -53,7 +42,6 @@ public class ThreeStonesPacket {
         out.write(packet);
         System.out.println("Sending Packet");
         checkValues();
-        //System.out.println("packet sent.");
         
     }
     
